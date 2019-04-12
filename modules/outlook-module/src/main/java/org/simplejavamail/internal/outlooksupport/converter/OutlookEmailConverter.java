@@ -45,7 +45,8 @@ public class OutlookEmailConverter implements OutlookModule {
 	private static EmailPopulatingBuilder buildEmailFromOutlookMessage(@Nonnull final EmailPopulatingBuilder builder, @Nonnull final OutlookMessage outlookMessage) {
 		checkNonEmptyArgument(builder, "emailBuilder");
 		checkNonEmptyArgument(outlookMessage, "outlookMessage");
-		builder.from(outlookMessage.getFromName(), outlookMessage.getFromEmail());
+		String fromEmail = ofNullable(outlookMessage.getFromEmail()).orElse("donotreply@unknown-from-address.net");
+		builder.from(outlookMessage.getFromName(), fromEmail);
 		if (!MiscUtil.valueNullOrEmpty(outlookMessage.getReplyToEmail())) {
 			builder.withReplyTo(outlookMessage.getReplyToName(), outlookMessage.getReplyToEmail());
 		}
